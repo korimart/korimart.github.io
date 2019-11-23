@@ -167,6 +167,11 @@ function main(){
     latitudeBar.oninput = function(event){
         theta = latitudeBar.value * Math.PI / 180;
     }
+    let roll = false;
+    let button = document.getElementById("roll");
+    button.onclick = function(event){
+        roll = !roll;
+    }
 
     let handleKey = function(event){
         switch (event.key){
@@ -223,20 +228,22 @@ function main(){
         let ms = now - lastMS;
         lastMS = now;
 
+        angle += ms;
+
         function draw(vpMatrix){
             // Draw the cube
             gl.useProgram(diceProgram);
-            gl.uniformMatrix4fv(dicemvp, false, vpMatrix.elements);
+            let diceMVPMat = new Matrix4(vpMatrix);
+            if (roll)
+                diceMVPMat.rotate(angle, 1, 0, 0);
+            gl.uniformMatrix4fv(dicemvp, false, diceMVPMat.elements);
             gl.bindBuffer(gl.ARRAY_BUFFER, dicePosBuffer);
             gl.vertexAttribPointer(vLoc_pos, 3, gl.FLOAT, false, 0, 0);
             gl.drawElements(gl.TRIANGLES, diceIndices.length, gl.UNSIGNED_BYTE, 0);
 
-            // line common
-            let lineMVPMat = new Matrix4(vpMatrix);
-            lineMVPMat.scale(10, 10, 10);
-
             // Draw horizontal line
-            let horizontalMVPMat = new Matrix4(lineMVPMat);
+            let horizontalMVPMat = new Matrix4(vpMatrix);
+            horizontalMVPMat.scale(10, 10, 10);
             horizontalMVPMat.rotate(90, 1.0, 0.0, 0.0);
 
             gl.useProgram(lineProgram);
@@ -248,7 +255,8 @@ function main(){
             gl.drawArrays(gl.LINE_LOOP, 0, linePositions.length / 3)
 
             // draw vertical line
-            let vertMVPMat = new Matrix4(lineMVPMat);
+            let vertMVPMat = new Matrix4(vpMatrix);
+            vertMVPMat.scale(10, 10, 10);
             vertMVPMat.rotate(90 + theta * 180 / Math.PI, 0, 1, 0);
 
             gl.uniformMatrix4fv(linemvp, false, vertMVPMat.elements);
@@ -256,8 +264,7 @@ function main(){
             gl.drawArrays(gl.LINE_LOOP, 0, linePositions.length / 3)
 
             // draw line of sight
-            let LOSMVPMat = new Matrix4(vpMatrix);
-            gl.uniformMatrix4fv(linemvp, false, LOSMVPMat.elements);
+            gl.uniformMatrix4fv(linemvp, false, vpMatrix.elements);
             gl.uniform4f(lineColor, 1.0, 0.0784, 0.5765, 1.0); // hot pink
             gl.bindBuffer(gl.ARRAY_BUFFER, lineOfSightBuffer);
             gl.vertexAttribPointer(vLoc_pos, 3, gl.FLOAT, false, 0, 0);

@@ -691,6 +691,7 @@ function main(){
         gl.uniform1f(blinnShader.uniformLocs["r0"], earthScale);
         earthColor.bind(gl, blinnShader, "colorSampler");
         earthBump.bind(gl, blinnShader, "bumpSampler");
+        earthSpec.bind(gl, blinnShader, "specSampler");
         earthTransform.bind(gl, blinnShader, sunCamera.v, sunCamera.vp);
         earthMaterial.bind(gl, blinnShader);
         if (flatEarth)
@@ -777,8 +778,6 @@ function main(){
             moonColor.uploadTexture(gl);
             moonBump.uploadTexture(gl);
 
-            blinnShader.bind(gl);
-            earthSpec.bind(gl, blinnShader, "specSampler");
             loop();
         }
     );

@@ -110,7 +110,7 @@ vec3 perturbNormal(sampler2D sampler, vec2 texCoord, float r0, float scale){
 }
 
 void main(){
-    vec3 v = -fPos;
+    vec3 v = normalize(-fPos);
     vec3 n = normalize(mat3(normalMV) * perturbNormal(bumpSampler, fTexcoord, r0, scale));
 
     vec3 l = normalize(lights[0].position.xyz - fPos);

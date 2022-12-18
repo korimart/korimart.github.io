@@ -1,3 +1,1 @@
-{
-  kanjis: ["結", "婚", "科"]
-}
+[{"kanjiItself":"結"},{"kanjiItself":"婚"},{"kanjiItself":"科"}]

@@ -1,0 +1,1 @@
+This app collects, uses, and shares no user data whatsoever.

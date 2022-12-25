@@ -1,1 +1,1 @@
-[{"kanjiItself":"松"},{"kanjiItself":"浦"},{"kanjiItself":"果"},{"kanjiItself":"南"}]
+[{"kanjiId":1, "kanjiItself":"松"},{"kanjiId":2, "kanjiItself":"浦"},{"kanjiId":3, "kanjiItself":"果"},{"kanjiId":4, "kanjiItself":"南"}]
